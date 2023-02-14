@@ -39,27 +39,31 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Brand(models.Model):
     name = models.CharField(max_length=32)
     parent = models.ForeignKey('self', on_delete=models.CASCADE)
 
 
 class Product(models.Model):
-    product_type = models.ForeignKey(ProductType, on_delete=models.PROTECT)
+    product_type = models.ForeignKey(ProductType, on_delete=models.PROTECT, related_name='product_type')
     upc = models.BigIntegerField(unique=True)
     title = models.CharField(max_length=32)
     description = models.TextField(blank=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
-    brand = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products_cat')
+    brand = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products_brand')
 
     def __str__(self):
         return self.title
 
 
-class ProductAttribute(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='attribute_valuse')
+class ProductAttrib(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,
+                                related_name='attribute_values')
     value = models.CharField(max_length=48)
-    attribute = models.ForeignKey(ProductAttribute, on_delete=models.PROTECT, related_name='values')
+    attribute = models.ForeignKey(ProductAttribute,
+                                  on_delete=models.PROTECT,
+                                  related_name='values')
 
     def __str__(self):
         return f"{self.product}({self.value}"
