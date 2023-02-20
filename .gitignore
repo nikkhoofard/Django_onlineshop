@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 .idea/
 academy/local_*.py
+*/migrations/
 # C extensions
 *.so
 

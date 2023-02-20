@@ -3,7 +3,10 @@ from django.db import models
 
 class ProductType(models.Model):
 
-    title = models.CharField(max_length=32)
+    title = models.CharField(max_length=32, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    modify_time = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -34,7 +37,10 @@ class ProductAttribute(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=32)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
 
     def __str__(self):
         return self.name
@@ -42,7 +48,10 @@ class Category(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=32)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
@@ -50,8 +59,9 @@ class Product(models.Model):
     upc = models.BigIntegerField(unique=True)
     title = models.CharField(max_length=32)
     description = models.TextField(blank=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products_cat')
-    brand = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products_brand')
+    is_activate = models.BooleanField(default=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
+    brand = models.ForeignKey(Brand, on_delete=models.PROTECT, related_name='products')
 
     def __str__(self):
         return self.title
