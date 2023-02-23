@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
 
 # Create your views here.
 
 
-def main():
-    return None
+def product_list(requests):
+    return HttpResponse('product list')
