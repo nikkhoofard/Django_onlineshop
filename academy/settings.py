@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
     'catalogue.apps.CatalogueConfig',
+    'partner.apps.PartnerConfig',
     'transaction.apps.TransactionConfig',
 ]
 
