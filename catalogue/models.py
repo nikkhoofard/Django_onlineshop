@@ -1,6 +1,16 @@
 from django.db import models
 
 
+class IsActivateManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_activate=True)
+
+
+class IsActivateCatrgoryManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_activate=True)
+
+
 class ProductType(models.Model):
 
     title = models.CharField(max_length=32, blank=True, null=True)
@@ -66,9 +76,13 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+    default_manager = models.Manager()
+    objects = IsActivateManager()
+
     @property
     def stock(self):
         return self.partners.all().order_by('price').first()
+
 
 class ProductAttrib(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,
