@@ -29,3 +29,8 @@ def product_search(requests):
     return HttpResponse(f"search page:{context}")
 
 
+def user_profile(requests):
+    if requests.user.is_authenticated:
+        return HttpResponse(f"hello {requests.user}")
+    else:
+        return HttpResponse(f"you are not allowed :{requests.user}")

@@ -6,7 +6,7 @@ class IsActivateManager(models.Manager):
         return super().get_queryset().filter(is_activate=True)
 
 
-class IsActivateCatrgoryManager(models.Manager):
+class IsActivateCategoryManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_activate=True)
 
