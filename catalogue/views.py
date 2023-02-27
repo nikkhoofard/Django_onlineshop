@@ -1,5 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse
-
+from django.views.decorators.http import require_http_methods
 from catalogue.models import Product
 
 
@@ -28,9 +29,8 @@ def product_search(requests):
     context = "\n".join(f"{product.title}--{product.upc}." for product in products)
     return HttpResponse(f"search page:{context}")
 
-
+@login_required(login_url='/admin/login/')
+@require_http_methods(['GET', 'POST'])
 def user_profile(requests):
-    if requests.user.is_authenticated:
-        return HttpResponse(f"hello {requests.user}")
-    else:
-        return HttpResponse(f"you are not allowed :{requests.user}")
+    return HttpResponse(f"hello {requests.user}")
+
