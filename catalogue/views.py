@@ -1,14 +1,23 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.http import require_http_methods
 from catalogue.models import Product
 
 
-# Create your views here.
-
-
 def product_list(requests):
-    return HttpResponse('product list')
+    context = dict()
+    context['products'] = Product.objects.select_related('category').all()
+    return render(requests, 'catalogue/product_list.html', context)
+
+
+def product_details(requests, pk):
+    queryset = Product.objects.filter(is_active=True).filter(Q(pk=pk) | Q(upc=pk))
+    if queryset.exists():
+        product = queryset.first()
+        return HttpResponse(f"title:{product.title}")
+    else:
+        return HttpResponse(f" is not exist")
 
 
 def product_search(requests):
@@ -28,6 +37,7 @@ def product_search(requests):
     )
     context = "\n".join(f"{product.title}--{product.upc}." for product in products)
     return HttpResponse(f"search page:{context}")
+
 
 @login_required(login_url='/admin/login/')
 @require_http_methods(['GET', 'POST'])
