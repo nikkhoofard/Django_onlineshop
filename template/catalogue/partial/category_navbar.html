@@ -1,0 +1,8 @@
+{% load category_tags %}
+<h4>hello</h4>
+{% get_category as categorise %}
+
+{% for category in categorise %}
+  <p>{{category}}</p>
+{% endfor %}
+

@@ -1,14 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>hello iran</h1>
+{% extends 'base.html' %}
+{% block title %}
+    product list
+{%endblock%}
+{% block content %}
+
+   <h1>hello iran</h1>
     {%for product in products%}
-    <a href="#">{{product.title}}</a><br>
+    <a href="{% url 'product-detail' product.pk %}">{{product.title}}</a><br>
+    {% if product.stock %}
+        <h4>${{product.stock.price}}</h4>
+    {% endif %}
+
     {% endfor %}
 
-</body>
-</html>
+{%endblock%}
+
+
+
+

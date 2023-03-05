@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import render, HttpResponse
 from django.views.decorators.http import require_http_methods
 from catalogue.models import Product
@@ -12,12 +13,11 @@ def product_list(requests):
 
 
 def product_details(requests, pk):
-    queryset = Product.objects.filter(is_active=True).filter(Q(pk=pk) | Q(upc=pk))
+    queryset = Product.objects.filter(is_activate=True).filter(Q(pk=pk) | Q(upc=pk))
     if queryset.exists():
         product = queryset.first()
-        return HttpResponse(f"title:{product.title}")
-    else:
-        return HttpResponse(f" is not exist")
+        return render(requests, 'catalogue/product_detail.html', {"product": product})
+    raise Http404
 
 
 def product_search(requests):
